@@ -7,6 +7,7 @@ from flask_babel import Babel, _, get_locale
 import pytz
 from datetime import datetime
 
+
 class Config(object):
     LANGUAGES = ['en', 'fr']
     BABEL_DEFAULT_LOCALE = 'en'
@@ -15,6 +16,7 @@ class Config(object):
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
 
 babel = Babel(app)
 
@@ -32,6 +34,7 @@ def get_user():
         return users[int(user_id)]
     return None
 
+
 @app.before_request
 def before_request():
     g.user = get_user()
@@ -43,6 +46,7 @@ def index():
     Home Page
     """
     return render_template('index.html')
+
 
 @babel.localeselector
 def get_locale():
@@ -63,6 +67,7 @@ def get_locale():
     """
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
+
 @babel.timezoneselector
 def get_timezone():
     """
@@ -82,6 +87,7 @@ def get_timezone():
         return 'UTC'
     except pytz.exceptions.UnknownTimeZoneError:
         return 'UTC'
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
