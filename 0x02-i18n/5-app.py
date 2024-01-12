@@ -4,6 +4,7 @@ A flask app with Babel config
 """
 from flask import Flask, render_template, request, g
 from flask_babel import Babel, _
+from typing import Union, Dict
 
 
 class Config(object):
@@ -17,7 +18,7 @@ class Config(object):
 
 app = Flask(__name__)
 app.config.from_object(Config)
-
+app.url_map.strict_slashes = False
 babel = Babel(app)
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
@@ -28,6 +29,9 @@ users = {
 
 
 def get_user():
+    """
+    This retrieves user based ids
+    """
     user_id = request.args.get('login_as')
     if user_id and int(user_id) in users:
         return users[int(user_id)]
@@ -36,6 +40,9 @@ def get_user():
 
 @app.before_request
 def before_request():
+    """
+    Executes routines before each request resolution
+    """
     g.user = get_user()
 
 
@@ -48,7 +55,10 @@ def index():
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
+    """
+    This retrieves a locale from the webpage
+    """
     if g.user:
         return g.user['locale']
     return request.accept_languages.best_match(app.config['LANGUAGES'])

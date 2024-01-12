@@ -5,6 +5,7 @@ A flask app with Babel config
 from flask import Flask, render_template, request, g
 from flask_babel import Babel, _, get_locale
 import pytz
+from typing import Union, Dict
 
 
 class Config(object):
@@ -29,7 +30,7 @@ users = {
 }
 
 
-def get_user():
+def get_user() -> Union[Dict, None]:
     user_id = request.args.get('login_as')
     if user_id and int(user_id) in users:
         return users[int(user_id)]
@@ -37,12 +38,12 @@ def get_user():
 
 
 @app.before_request
-def before_request():
+def before_request() -> None:
     g.user = get_user()
 
 
 @app.route('/')
-def index():
+def index() -> str:
     """
     Home Page
     """
@@ -50,7 +51,7 @@ def index():
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     """
     Locale from URL parameters
     """
@@ -70,7 +71,7 @@ def get_locale():
 
 
 @babel.timezoneselector
-def get_timezone():
+def get_timezone() -> str:
     """
     This retrieves the timezone from the webpage
     """
