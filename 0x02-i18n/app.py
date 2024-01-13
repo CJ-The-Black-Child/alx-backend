@@ -40,6 +40,9 @@ def get_user() -> Union[Dict, None]:
 
 @app.before_request
 def before_request() -> None:
+    """
+    Executes routines before each request's resolution
+    """
     g.user = get_user()
 
 
@@ -51,7 +54,7 @@ def index() -> str:
     return render_template('index.html')
 
 
-@babel.localeselector
+@babel.locale_selector
 def get_locale() -> str:
     """
     Locale from URL parameters

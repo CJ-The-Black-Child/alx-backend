@@ -29,7 +29,7 @@ def get_index() -> str:
     return render_template('3-index.html')
 
 
-@babel.localeselector
+@babel.locale_selector
 def get_locale():
     """
     This retrieves a locale from the webpage

@@ -54,7 +54,7 @@ def index() -> str:
     return render_template('6-index.html')
 
 
-@babel.localeselector
+@babel.locale_selector
 def get_locale() -> str:
     """
     Locale from URL parameters
